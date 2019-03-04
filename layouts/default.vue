@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <div id="app">
     <nuxt-link to="/">Home</nuxt-link>
     <nuxt-link to="/game">Home: /game</nuxt-link>
-    <nuxt-link to="/game/test">/game/test</nuxt-link>
     <nuxt/>
   </div>
 </template>
@@ -26,7 +25,9 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-
+#app {
+  border: 1px solid green;
+}
 .button--green {
   display: inline-block;
   border-radius: 4px;
