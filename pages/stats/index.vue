@@ -8,7 +8,12 @@
 import Player from "~/components/Player.vue";
 
 export default {
-  components: { Player }
+  components: {
+    Player
+  },
+  methods: {
+
+  }
 };
 </script>
 

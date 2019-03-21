@@ -6,8 +6,12 @@ export default {
   get: function(path) {
     return this.requester.get(this.urlGame(path), { withCredentials: true });
   },
+  post: function(path, data) {
+    return this.requester.post(this.urlGame(path), data, {
+      withCredentials: true
+    });
+  },
   urlGame: function(path) {
-    console.log("tst");
     return "http://127.0.0.1:3000/game/" + path;
   }
 };
