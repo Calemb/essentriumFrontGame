@@ -1,11 +1,13 @@
 <template>
   <v-app dark>
     <logo/>
-    <avatar />
+    <avatar/>
     <nuxt-link to="/">Home: /game</nuxt-link>
     <nuxt-link to="/travel">Travel</nuxt-link>
     <nuxt id="app"/>
-    <v-footer>FOOTER
+    <chat/>
+    <v-footer>
+      FOOTER
       <br>
       {{ debug }}
     </v-footer>
@@ -14,16 +16,25 @@
 <script>
 import Logo from "~/components/Logo.vue";
 import Avatar from "~/components/Avatar.vue";
+import Chat from "~/components/Chat.vue";
+import socket from "~/plugins/socket.io.js";
+
 export default {
   components: {
     Logo,
-    Avatar
+    Avatar,
+    Chat
   },
   data() {
     return {
       debug: ""
     };
   },
+  // beforeMount() {
+  //   socket.on("new-message", message => {
+  //     this.messages.push(message);
+  //   });
+  // },
   methods: {}
 };
 </script>
