@@ -14,10 +14,10 @@
   </v-app>
 </template>
 <script>
-import Logo from "~/components/Logo.vue";
-import Avatar from "~/components/Avatar.vue";
-import Chat from "~/components/Chat.vue";
-import socket from "~/plugins/socket.io.js";
+import Logo from "~/components/Logo.vue"
+import Avatar from "~/components/Avatar.vue"
+import Chat from "~/components/Chat.vue"
+
 
 export default {
   components: {

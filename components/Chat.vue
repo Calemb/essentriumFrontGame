@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import socket from "~/plugins/socket.io.js"
+
 export default {
   data() {
     return {
