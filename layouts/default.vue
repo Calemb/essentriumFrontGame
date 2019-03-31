@@ -5,7 +5,7 @@
     <nuxt-link to="/">Home: /game</nuxt-link>
     <nuxt-link to="/travel">Travel</nuxt-link>
     <nuxt id="app"/>
-    <chat/>
+    <chat v-bind:guildName="'testGuildName'" v-bind:cityName="'testCityName'"/>
     <v-footer>
       FOOTER
       <br>
@@ -14,10 +14,9 @@
   </v-app>
 </template>
 <script>
-import Logo from "~/components/Logo.vue"
-import Avatar from "~/components/Avatar.vue"
-import Chat from "~/components/Chat.vue"
-
+import Logo from "~/components/Logo.vue";
+import Avatar from "~/components/Avatar.vue";
+import Chat from "~/components/Chat.vue";
 
 export default {
   components: {
