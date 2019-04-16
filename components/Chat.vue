@@ -1,14 +1,17 @@
 <template>
   <div id="chat">
+    Content of {{ activeTabTitle }}
+    <button @click="resize">~</button>
+    {{ debug}}
     <div id="content">
-      {{ debug}}
-      <br>treści!
-      <br>
-      <p v-for="(msg, index) in guildMsgs" :key="index">{{msg}}</p>
+      <p v-for="(msg, mI) in activeTabContent" :key="mI" class="msg">{{msg}}</p>
     </div>
-    <button>Guild ({{ guildName }})</button>
-    <button>City</button>
-    <button>Location</button>
+    <button
+      v-for="(tab, index) in tabs"
+      :key="index"
+      @click="activateTab(index)"
+      v-bind:class="{active: index===activeTab}"
+    >{{tab.title}}</button>
     <br>
     <input type="text" placeholder="msg" v-model="msg">
     <button @click="send">Send</button>
@@ -25,80 +28,77 @@ export default {
     return {
       msg: "",
       debug: "",
-      activeTab: "guild",
-      guildMsgs: ["msg1"],
-      socketGuild: undefined,
-      socketCity: undefined,
-      socketLocation: undefined
+      url: "127.0.0.1:3000/",
+      tabs: [],
+      activeTab: 0, //index of tabs
+      expanded: true,
+      contentDOM: {}
     };
   },
-  watch: {
-    guildMsgs: {
-      handler: (newOne, oldOne) => {
-        console.table(newOne);
-      },
-      deep: true
+  computed: {
+    activeTabTitle: function() {
+      if (this.tabs.length > 0) {
+        return this.tabs[this.activeTab].title;
+      } else {
+        return "";
+      }
+    },
+    activeTabContent: function() {
+      if (this.tabs.length > 0) {
+        return this.tabs[this.activeTab].content;
+      } else {
+        return [];
+      }
     }
   },
   mounted: function() {
-    if (this.guildName !== "") {
-      this.debug = "Pospinać guildName przez bazę danych włącznie!";
-
-      this.socketGuild = io("127.0.0.1:3000/" + this.guildName);
-
-      // this.socketGuild.on("error", reason => {
-      //   console.log(reason);
-      // });
-      // this.socketGuild.on('connected', () => {
-      //   console.log('CONNECTED!')
-      // // })
-      this.socketGuild.on("msg", msg => {
-        console.log("rec: " + msg);
-        this.guildMsgs.push(msg);
-      });
-      //   this.socketGuild.emit("msg", { msg: "test" }, function(data) {
-      //     console.log(data);
-      //   });
-      // });
-    }
-    if (this.cityName !== "") {
-      this.socketCity = io("127.0.0.1:3000/" + this.cityName);
-      this.socketCity.on("msg", data => {
-        console.log("msg income city");
-      });
-    }
-
-    this.socketLocation = io("127.0.0.1:3000/location");
-    this.socketLocation.on("msg", data => {
-      console.log("msg income location");
-    });
+    // this.prepareTabs();
+    this.contentDOM = document.getElementById("content");
+    this.resize();
   },
   methods: {
-    chooseSocket: function(name) {
-      switch (name) {
-        case "guild":
-          return this.socketGuild;
-          break;
-        case "location":
-          return this.socketLocation;
-          break;
-        case "city":
-          return this.socketCity;
-          break;
-      }
+    resize: function() {
+      this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
+      this.expanded = !this.expanded;
     },
-    //use sockets ?
-
-    // guild-> connect to specyfic namespace
-    // location -> common napespace, on serwer decide who should get msg
-    // world -> global discussion!
-
-    //switching tabs ==> switch listen channel
-    //send to certain channel only
-    //for now - don't persistent any msg!
+    activateTab: function(tabIndex) {
+      this.activeTab = tabIndex;
+    },
+    prepareTabs: function() {
+      this.tabs.push({
+        title: "Location", //btn title
+        socket: io(this.url + "location"), //socket of namespace
+        content: [] //received msgs
+      });
+      this.tabs.push({
+        title: this.guildName,
+        socket: io(this.url + this.guildName),
+        content: []
+      });
+      this.tabs.push({
+        title: this.cityName,
+        socket: io(this.url + this.cityName),
+        content: []
+      });
+      var t = this;
+      this.tabs.forEach(tab => {
+        tab.socket.on("msg", function(m) {
+          // console.log(t);
+          var id = this.id;
+          t.tabs
+            .filter(innerTab => innerTab.socket.id === id)
+            .map(item => item.content)[0]
+            .push(m.name + ": " + m.msg);
+          console.table(this.id);
+        });
+      });
+    },
     send: function() {
-      const socket = this.chooseSocket(this.activeTab);
-      var e = this.socketGuild.emit("msg", this.msg);
+      this.tabs[this.activeTab].socket.emit("msg", this.msg, () => {
+        //push msg to local chat only when delivered to all users!
+        this.tabs[this.activeTab].content.push(this.msg);
+        this.msg = "";
+      });
       // console.table(e);
       // socket;
       console.log(this.msg);
@@ -110,21 +110,35 @@ export default {
 
 <style>
 #chat {
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  /* background-color: #888; */
   position: fixed;
   right: 0px;
   bottom: 0px;
-  width: 50vw;
-  height: 85vh;
+  width: 30vw;
+  padding: 0px 3px;
+  /* height: 85vh; */
 }
 #content {
   display: block;
   border: 1px solid green;
-  height: 75%;
+  overflow-y: scroll;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.msg {
+  border-bottom: 1px solid #888;
 }
 button {
   border: 1px solid gray;
-  padding: 20px 20px;
+  background-color: aliceblue;
+  color: #000;
+  padding: 3px;
+  min-width: 26px;
+  min-height: 30px;
+}
+.active {
+  background-color: #000;
+  color: #fff;
 }
 input {
   border: 1px solid yellow;
