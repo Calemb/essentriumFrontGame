@@ -1,13 +1,23 @@
 <template>
-  <v-app dark>
-    <logo/>
-    <avatar/>
-    <nuxt-link to="/">Home: /game</nuxt-link>
-    <nuxt-link to="/travel">Travel</nuxt-link>
-    <nuxt id="app"/>
-    <chat v-bind:guildName="'testGuildName'" v-bind:cityName="'testCityName'"/>
+  <v-app
+    dark
+    class="essentrium"
+  >
+    <header>
+      <nuxt-link to="/">
+        <logo />
+      </nuxt-link>
+      <avatar />
+      <nuxt-link to="/travel">Travel</nuxt-link>
+      <nuxt-link to="/guild">guild</nuxt-link>
+    </header>
+    <nuxt id="app" />
+    <chat
+      v-bind:guildName="'testGuildName'"
+      v-bind:cityName="'testCityName'"
+    />
     <v-footer>
-      FOOTER
+      &copy; 2019 - Sculpt0r (<a href="essentrium.net"> ESSENTRIUM.NET </a>)
       <br>
       {{ debug }}
     </v-footer>
@@ -38,4 +48,13 @@ export default {
 };
 </script>
 <style>
+.essentrium header .avatar,
+.essentrium header .logo {
+  display: inline-block;
+}
+.essentrium header a,
+.essentrium header .avatar {
+  border: 1px solid #888;
+  padding: 2px 5px;
+}
 </style>

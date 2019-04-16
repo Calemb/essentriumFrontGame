@@ -1,6 +1,6 @@
 <template>
     <div>
-        Hi
+        Welcome to Essentrium! #tbbg #browsergame
     </div>
 </template>
 

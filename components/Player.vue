@@ -2,7 +2,10 @@
   <div>
     {{l_name}}: {{name}}
     <div>
-      <span v-for="(stat, index) in stats" :key="index">{{stat.l_name}}: {{stat.value}}</span>
+      <span
+        v-for="(stat, index) in stats"
+        :key="index"
+      >{{stat.l_name}}: {{stat.value}}</span>
     </div>
   </div>
 </template>
@@ -43,7 +46,6 @@ export default {
 
 <style>
 span {
-    display: block;
-
+  display: block;
 }
 </style>
