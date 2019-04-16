@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <nuxt-link to="/stats">{{ l_name }}</nuxt-link>
-    {{ name }}
+  <div class="avatar">
+    <nuxt-link to="/stats">{{ name }}</nuxt-link>
     <br>
   </div>
 </template>
@@ -13,7 +12,6 @@ export default {
   data() {
     return {
       name: "",
-      l_name: "",
       pageContent: ""
     };
   },
@@ -24,7 +22,6 @@ export default {
     LoadPlayer: function() {
       Requester.get("_player-fast")
         .then(response => {
-          this.l_name = response.data.l_name;
           this.name = response.data.name;
 
           this.stats = response.data.stats;
@@ -41,7 +38,4 @@ export default {
 </script>
 
 <style>
-#con {
-  border: 1px solid gray;
-}
 </style>
