@@ -1,24 +1,46 @@
 <template>
   <div id="chat">
-    Content of {{ activeTabTitle }}
-    <button @click="resize">~</button>
-    {{ debug}}
-    <div id="content">
-      <p v-for="(msg, mI) in activeTabContent" :key="mI" class="msg">{{msg}}</p>
+    <div id="dialog">
+      Content of {{ activeTabTitle }}
+      <button @click="resize">~</button>
+      <button @click="playersList">players</button>
+      {{ debug}}
+      <div id="content">
+        <p
+          v-for="(msg, mI) in activeTabContent"
+          :key="mI"
+          class="msg"
+        >{{msg}}</p>
+      </div>
+      <button
+        v-for="(tab, index) in tabs"
+        :key="index"
+        @click="activateTab(index)"
+        v-bind:class="{active: index===activeTab}"
+      >{{tab.title}}</button>
+      <br>
+      <input
+        type="text"
+        placeholder="msg"
+        v-model="msg"
+      >
+      <button @click="send">Send</button>
     </div>
-    <button
-      v-for="(tab, index) in tabs"
-      :key="index"
-      @click="activateTab(index)"
-      v-bind:class="{active: index===activeTab}"
-    >{{tab.title}}</button>
-    <br>
-    <input type="text" placeholder="msg" v-model="msg">
-    <button @click="send">Send</button>
+    <div id="playersList">
+      <nuxt-link to="/view/id">
+        -p 1
+      </nuxt-link>
+      -p 2
+      -p 3
+    </div>
   </div>
 </template>
 
 <script>
+//WORKING chat global list with separate to other cities etc
+//  -> click on player and view stats
+//    -> msg to player
+//      -> fight with player
 import io from "~/plugins/socket.io.js";
 
 export default {
@@ -52,11 +74,14 @@ export default {
     }
   },
   mounted: function() {
-    // this.prepareTabs();
+    this.prepareTabs();
     this.contentDOM = document.getElementById("content");
     this.resize();
   },
   methods: {
+    playersList: function() {
+
+    },
     resize: function() {
       this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
       this.expanded = !this.expanded;
@@ -143,5 +168,10 @@ button {
 input {
   border: 1px solid yellow;
   padding: 15px;
+}
+#dialog,
+#playersList {
+  border: 1px solid red;
+  display: inline-block;
 }
 </style>

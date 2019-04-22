@@ -1,6 +1,9 @@
 <template>
   <div class="avatar">
-    <nuxt-link to="/stats">{{ name }}</nuxt-link>
+    <nuxt-link to="/stats">
+      {{ name }}
+    </nuxt-link>
+      [{{hp}} / MAX]
     <br>
   </div>
 </template>
@@ -12,7 +15,7 @@ export default {
   data() {
     return {
       name: "",
-      pageContent: ""
+      hp: 0
     };
   },
   mounted() {
@@ -24,7 +27,7 @@ export default {
         .then(response => {
           this.name = response.data.name;
 
-          this.stats = response.data.stats;
+          this.hp = response.data.hp;
         })
         .catch(error => {
           console.log(error);

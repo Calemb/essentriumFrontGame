@@ -39,11 +39,6 @@ export default {
       debug: ""
     };
   },
-  // beforeMount() {
-  //   socket.on("new-message", message => {
-  //     this.messages.push(message);
-  //   });
-  // },
   methods: {}
 };
 </script>

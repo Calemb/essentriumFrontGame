@@ -12,7 +12,15 @@
           v-for="(member, index) in guild.members"
           :key="'m'+index"
         >
-          {{ member._id }} - [{{ member.role }}]
+          ({{member._id}}) {{ member.name }} - [{{ member.role }}]
+          <select v-model="selectedRoles[index]">
+            <option
+              v-for="(role, index) in roles"
+              :key="index"
+              v-bind:value="role"
+            >{{role}}</option>
+          </select>
+          <button @click="setRole(index)">Set Role!</button>
         </li>
       </ul>
       <div v-if="requests && requests.length > 0">
@@ -62,12 +70,17 @@ export default {
       newGuildName: "",
       guild: "",
       requests: [],
-      guilds: []
+      guilds: [],
+      roles: ["admin", "subadmin", "member"],
+      selectedRoles: []
     };
   },
   mounted: function() {
     Requester.get("guild/my").then(result => {
+      console.log(result.data);
+
       this.guild = result.data.guild;
+
       this.requests = result.data.requests;
     });
 
@@ -77,6 +90,12 @@ export default {
     });
   },
   methods: {
+    setRole: function(membersIndex) {
+      Requester.post("guild/role", {
+        memberId: this.guild.members[membersIndex]._id,
+        newRole: this.selectedRoles[membersIndex]
+      }).then(this.debugResults);
+    },
     debugResults: function(result) {
       console.log(result);
     },
