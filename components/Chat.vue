@@ -27,11 +27,13 @@
       <button @click="send">Send</button>
     </div>
     <div id="playersList">
-      <nuxt-link to="/view/id">
-        -p 1
+      <nuxt-link
+        v-for="p in playersList"
+        :key="p._id"
+        v-bind:to="'./view/'+p._id"
+      >
+        {{ p.name }}
       </nuxt-link>
-      -p 2
-      -p 3
     </div>
   </div>
 </template>
@@ -54,10 +56,14 @@ export default {
       tabs: [],
       activeTab: 0, //index of tabs
       expanded: true,
-      contentDOM: {}
+      contentDOM: {},
+      players: []
     };
   },
   computed: {
+    playersList: function() {
+      return this.players;
+    },
     activeTabTitle: function() {
       if (this.tabs.length > 0) {
         return this.tabs[this.activeTab].title;
@@ -79,9 +85,7 @@ export default {
     this.resize();
   },
   methods: {
-    playersList: function() {
-
-    },
+    playersList: function() {},
     resize: function() {
       this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
       this.expanded = !this.expanded;
@@ -106,6 +110,20 @@ export default {
         content: []
       });
       var t = this;
+      this.tabs
+        .filter(tab => tab.title === "Location")
+        .forEach(locationTab => {
+          locationTab.socket.on("list", msg => {
+            console.log("playersList");
+            console.table(msg);
+            t.players = msg;
+          });
+          locationTab.socket.on("new-player", msg => {
+            console.log("new-player");
+            console.table(msg);
+            t.players.push(msg)
+          });
+        });
       this.tabs.forEach(tab => {
         tab.socket.on("msg", function(m) {
           // console.log(t);
