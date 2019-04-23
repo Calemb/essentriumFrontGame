@@ -3,8 +3,8 @@
     <div id="dialog">
       Content of {{ activeTabTitle }}
       <button @click="resize">~</button>
-      <button @click="playersList">players</button>
-      {{ debug}}
+      <button @click="togglePlayersList">players</button>
+      {{ debug }}
       <div id="content">
         <p
           v-for="(msg, mI) in activeTabContent"
@@ -85,7 +85,7 @@ export default {
     this.resize();
   },
   methods: {
-    playersList: function() {},
+    togglePlayersList: function() {},
     resize: function() {
       this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
       this.expanded = !this.expanded;
@@ -115,12 +115,12 @@ export default {
         .forEach(locationTab => {
           locationTab.socket.on("list", msg => {
             console.log("playersList");
-            console.table(msg);
+            // console.table(msg);
             t.players = msg;
           });
           locationTab.socket.on("new-player", msg => {
             console.log("new-player");
-            console.table(msg);
+            // console.table(msg);
             t.players.push(msg)
           });
         });
@@ -132,7 +132,7 @@ export default {
             .filter(innerTab => innerTab.socket.id === id)
             .map(item => item.content)[0]
             .push(m.name + ": " + m.msg);
-          console.table(this.id);
+          // console.table(this.id);
         });
       });
     },
