@@ -19,7 +19,7 @@ export default {
     });
   },
   urlGame: function(path) {
-    return "http://127.0.0.1:3000/game/" + path;
+    return "http://51.38.129.191/game/" + path;
   }
 };
 </script>
