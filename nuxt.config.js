@@ -10,6 +10,7 @@ module.exports = {
     title: pkg.name,
     meta: [
       { charset: 'utf-8' },
+      // { httpEquiv: "Access-Control-Allow-Origin", content: "*" },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
@@ -44,7 +45,7 @@ module.exports = {
     '@nuxtjs/vuetify',
   ],
   env: {
-    WS_URL: process.env.WS_URL || 'http://localhost:3000'
+    WS_URL: process.env.WS_URL || 'http://127.0.0.1:3000'
   },
   /*
   ** Axios module configuration

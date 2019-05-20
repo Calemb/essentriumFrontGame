@@ -1,8 +1,13 @@
 <template>
   <div>
-    {{l_name}}: {{name}}
+    {{name}}
     <div>
-      <span v-for="(stat, index) in stats" :key="index">{{stat.l_name}}: {{stat.value}}</span>
+      <span
+        v-for="(stat, index) in stats"
+        :key="index"
+      >
+        {{index}} : {{stat}}
+      </span>
     </div>
   </div>
 </template>
@@ -13,9 +18,7 @@ import Requester from "~/components/request-cfg.vue";
 export default {
   data() {
     return {
-      l_name: "",
-      name: "",
-      stats: []
+      stats: ""
     };
   },
   mounted() {
@@ -25,10 +28,7 @@ export default {
     LoadPlayer: function() {
       Requester.get("_player")
         .then(response => {
-          this.l_name = response.data.l_name;
-          this.name = response.data.name;
-
-          this.stats = response.data.stats;
+          this.stats = response.data;
         })
         .catch(error => {
           console.log(error);
@@ -43,7 +43,6 @@ export default {
 
 <style>
 span {
-    display: block;
-
+  display: block;
 }
 </style>

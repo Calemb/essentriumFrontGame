@@ -1,13 +1,26 @@
 <template>
-  <v-app dark>
-    <logo/>
-    <avatar/>
-    <nuxt-link to="/">Home: /game</nuxt-link>
-    <nuxt-link to="/travel">Travel</nuxt-link>
-    <nuxt id="app"/>
-    <chat/>
+  <v-app
+    dark
+    class="essentrium"
+  >
+    <header>
+      <nuxt-link to="/">
+        <logo />
+      </nuxt-link>
+      <avatar />
+      <nuxt-link to="/travel">Travel</nuxt-link>
+      <nuxt-link to="/guild">GUILD</nuxt-link>
+      <nuxt-link to="/inbox">
+        <inbox />
+      </nuxt-link>
+    </header>
+    <nuxt id="app" />
+    <chat
+      v-bind:guildName="'testGuildName'"
+      v-bind:cityName="'testCityName'"
+    />
     <v-footer>
-      FOOTER
+      &copy; 2019 - Sculpt0r (<a href="essentrium.net"> ESSENTRIUM.NET </a>)
       <br>
       {{ debug }}
     </v-footer>
@@ -17,26 +30,35 @@
 import Logo from "~/components/Logo.vue";
 import Avatar from "~/components/Avatar.vue";
 import Chat from "~/components/Chat.vue";
-import socket from "~/plugins/socket.io.js";
+import Inbox from "~/components/Inbox.vue";
 
 export default {
   components: {
     Logo,
     Avatar,
-    Chat
+    Chat,
+    Inbox
   },
   data() {
     return {
       debug: ""
     };
   },
-  // beforeMount() {
-  //   socket.on("new-message", message => {
-  //     this.messages.push(message);
-  //   });
-  // },
   methods: {}
 };
 </script>
 <style>
+.essentrium header .avatar,
+.essentrium header .logo {
+  display: inline-block;
+}
+.essentrium header a,
+.essentrium header .avatar {
+  border: 1px solid #888;
+  padding: 2px 5px;
+}
+header a {
+  display: inline-block;
+
+}
 </style>
