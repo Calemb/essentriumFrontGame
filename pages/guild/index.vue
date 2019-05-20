@@ -77,7 +77,7 @@ export default {
   },
   mounted: function() {
     Requester.get("guild/my").then(result => {
-      console.log(result.data);
+      console.log("guild mounted: ", result.data);
 
       this.guild = result.data.guild;
 
@@ -86,7 +86,6 @@ export default {
 
     Requester.get("guild/all").then(result => {
       this.guilds = result.data;
-      console.log(result);
     });
   },
   methods: {
@@ -97,7 +96,7 @@ export default {
       }).then(this.debugResults);
     },
     debugResults: function(result) {
-      console.log(result);
+      console.log("guild debug", result);
     },
     accept: function(requestsIndex) {
       Requester.get(

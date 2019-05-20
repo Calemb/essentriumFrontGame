@@ -9,7 +9,10 @@
       </nuxt-link>
       <avatar />
       <nuxt-link to="/travel">Travel</nuxt-link>
-      <nuxt-link to="/guild">guild</nuxt-link>
+      <nuxt-link to="/guild">GUILD</nuxt-link>
+      <nuxt-link to="/inbox">
+        <inbox />
+      </nuxt-link>
     </header>
     <nuxt id="app" />
     <chat
@@ -27,12 +30,14 @@
 import Logo from "~/components/Logo.vue";
 import Avatar from "~/components/Avatar.vue";
 import Chat from "~/components/Chat.vue";
+import Inbox from "~/components/Inbox.vue";
 
 export default {
   components: {
     Logo,
     Avatar,
-    Chat
+    Chat,
+    Inbox
   },
   data() {
     return {
@@ -51,5 +56,9 @@ export default {
 .essentrium header .avatar {
   border: 1px solid #888;
   padding: 2px 5px;
+}
+header a {
+  display: inline-block;
+
 }
 </style>

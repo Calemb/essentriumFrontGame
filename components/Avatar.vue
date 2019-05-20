@@ -3,7 +3,7 @@
     <nuxt-link to="/stats">
       {{ name }}
     </nuxt-link>
-      [{{hp}} / MAX]
+    [{{hp}} / MAX]
     <br>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
           this.hp = response.data.hp;
         })
         .catch(error => {
-          console.log(error);
+          console.log("Avatar err: ", error);
         })
         .finally(() => {
           console.log("final....");
