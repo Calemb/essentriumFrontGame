@@ -39,11 +39,8 @@
 </template>
 
 <script>
-//WORKING chat global list with separate to other cities etc
-//  -> click on player and view stats
-//    -> msg to player
-//      -> fight with player
 import io from "~/plugins/socket.io.js";
+import requester from "~/components/request-cfg";
 
 export default {
   props: ["guildName", "cityName"],
@@ -52,7 +49,7 @@ export default {
     return {
       msg: "",
       debug: "",
-      url: "51.38.129.191:3000/",
+      url: requester.urlWs(),
       tabs: [],
       activeTab: 0, //index of tabs
       expanded: true,
@@ -121,7 +118,7 @@ export default {
           locationTab.socket.on("new-player", msg => {
             console.log("new-player");
             // console.table(msg);
-            t.players.push(msg)
+            t.players.push(msg);
           });
         });
       this.tabs.forEach(tab => {

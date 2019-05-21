@@ -18,8 +18,13 @@ export default {
       withCredentials: true
     });
   },
+  url: "127.0.0.1",
+  portWs: "80",
   urlGame: function(path) {
-    return "http://51.38.129.191/game/" + path;
+    return "http://" + this.url + "/game/" + path;
+  },
+  urlWs: function() {
+    return this.url + ":" + this.portWs;
   }
 };
 </script>
