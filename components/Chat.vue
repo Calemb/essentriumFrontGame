@@ -52,7 +52,7 @@ export default {
     return {
       msg: "",
       debug: "",
-      url: "127.0.0.1:3000/",
+      url: "51.38.129.191:3000/",
       tabs: [],
       activeTab: 0, //index of tabs
       expanded: true,
