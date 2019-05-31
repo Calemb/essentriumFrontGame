@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{name}}
+    <!-- {{name}} -->
     <div>
       <span
         v-for="(stat, index) in stats"
