@@ -4,6 +4,7 @@
     class="essentrium"
   >
     <header>
+      <nuxt-link to="/admin">ADMIN</nuxt-link>
       <nuxt-link to="/">
         <logo />
       </nuxt-link>
@@ -13,6 +14,7 @@
       <nuxt-link to="/inbox">
         <inbox />
       </nuxt-link>
+      <nuxt-link to="/logout">LOGOUT</nuxt-link>
     </header>
     <nuxt id="app" />
     <chat
@@ -27,10 +29,11 @@
   </v-app>
 </template>
 <script>
-import Logo from "~/components/Logo.vue";
-import Avatar from "~/components/Avatar.vue";
-import Chat from "~/components/Chat.vue";
-import Inbox from "~/components/Inbox.vue";
+import Logo from "~/components/Logo";
+import Avatar from "~/components/Avatar";
+import Chat from "~/components/Chat";
+import Inbox from "~/components/Inbox";
+import Requester from "~/components/request-cfg";
 
 export default {
   components: {
@@ -41,13 +44,29 @@ export default {
   },
   data() {
     return {
-      debug: ""
+      debug: "",
+      adminPriviliges: false
     };
   },
-  methods: {}
+  mounted: function() {
+    this.LoadPriviliges();
+  },
+  methods: {
+    LoadPriviliges: function() {
+      Requester.get("_account").then(response => {
+        const priviliges = response.data.priviliges;
+        if (priviliges.includes("admin")) {
+          this.adminPriviliges = true;
+        }
+      });
+    }
+  }
 };
 </script>
 <style>
+textarea {
+  border: 1px solid gray;
+}
 .essentrium header .avatar,
 .essentrium header .logo {
   display: inline-block;
@@ -59,6 +78,5 @@ export default {
 }
 header a {
   display: inline-block;
-
 }
 </style>
