@@ -6,8 +6,8 @@ const config = {
     portWs: "80"
   },
   dev: {
-    url: "127.0.0.1",
-    portWs: "80"
+    url: "127.0.0.1:3001",
+    portWs: "3001"
   }
 };
 
@@ -16,7 +16,7 @@ export default {
   //
   //CONFIG HERE - BEGIN
   //
-  config: config.prod,
+  config: config.dev,
   //
   //CONFIG HERE - END
   //
