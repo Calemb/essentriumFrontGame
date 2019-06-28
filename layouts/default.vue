@@ -22,7 +22,7 @@
       v-bind:cityName="'testCityName'"
     />
     <v-footer>
-      &copy; 2019 - Sculpt0r (<a href="essentrium.net"> ESSENTRIUM.NET </a>)
+      &copy; 2019 ...<a href="essentrium.net">ESSENTRIUM.NET</a>
       <br>
       {{ debug }}
     </v-footer>

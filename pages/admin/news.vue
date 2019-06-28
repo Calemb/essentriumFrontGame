@@ -1,22 +1,25 @@
 <template>
   <div>
     {{debug}}
+    <br>
     Title: <input
       type="text"
-      v-model="title"
+      v-model="editedNews.title"
     >
     <br>
-    Content: <textarea v-model="content"></textarea>
+    Content: <textarea v-model="editedNews.content"></textarea>
     <br>
     <button @click="SendNews">SEND</button>
 
     <div>
-      <p
+      <div
         v-for="entry in news"
         :key="entry.key"
       >
-        {{ entry.title }} :: {{ entry.content }}
-      </p>
+        <p> {{ entry.title }} :: {{ entry.content }}</p>
+        <button @click="Edit(entry)">Edit</button>
+        <button @click="Delete(entry)">Delete</button>
+      </div>
     </div>
   </div>
 </template>
@@ -27,8 +30,11 @@ export default {
   data() {
     return {
       debug: "",
-      title: "",
-      content: "",
+      editedNews: {
+        _id: "",
+        title: "",
+        content: ""
+      },
       news: []
     };
   },
@@ -41,12 +47,23 @@ export default {
         this.news = response.data;
       });
     },
+    Edit: function(entry) {
+      this.editedNews = entry;
+    },
+    Delete: function(entry) {
+      Requester.delete("news/" + entry._id).then(result => {
+        this.debug = result.data;
+        this.LoadNews();
+      });
+    },
     SendNews: function() {
       Requester.post("news", {
-        title: this.title,
-        content: this.content
+        _id: this.editedNews._id,
+        title: this.editedNews.title,
+        content: this.editedNews.content
       }).then(result => {
         this.debug = result.data;
+        this.LoadNews();
       });
     }
   }

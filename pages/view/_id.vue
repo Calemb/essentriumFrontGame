@@ -37,7 +37,6 @@ export default {
     };
   },
   mounted: function() {
-    //WORKING  -get player with that id data
     this.id = this.$nuxt._route.params.id;
     Requester.get("view/" + this.id).then(response => {
       console.log(response);
