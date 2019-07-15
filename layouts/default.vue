@@ -47,7 +47,8 @@ export default {
         "character", //0
         "innerApp", //100
         "chat" //200
-      ]
+      ],
+      navPagesInitValues: []
     };
   },
   mounted: function() {
@@ -68,6 +69,15 @@ export default {
     SetupLayout: function() {
       // let prevClientX = 0;
       this.AdjustPages();
+      document
+        .getElementById(this.navItem)
+        .addEventListener("touchstart", event => {
+          this.navPages.forEach((page, index) => {
+            this.navPagesInitValues[index] = this.ExtractNumber(
+              document.getElementById(page).style.left
+            );
+          });
+        });
       document
         .getElementById(this.navItem)
         .addEventListener("touchmove", event => {
@@ -97,7 +107,8 @@ export default {
       document
         .getElementById(this.navItem)
         .addEventListener("touchend", event => {
-          console.log(this.touchMoveXDir);
+          // console.log(this.touchMoveXDir);
+          console.log(this.navPagesInitValues);
 
           if (
             this.navSide + this.touchMoveXDir >= 0 &&
@@ -111,38 +122,21 @@ export default {
 
               const border = period / 2;
 
-              const progres = Math.floor(Math.abs(value) / period);
-              //(progress + 1) * 100 -> how many 'pages' is div scrollen to left or right
-              let startVal = (progres + 1) * period;
-              let curValue = Math.abs(value);
-
-              if (Math.sign(this.touchMoveXDir) > 0 && value < 0) {
-                curValue = startVal - curValue;
-              } else if (Math.sign(this.touchMoveXDir) < 0 && value > 0) {
-                curValue = startVal - curValue;
+              let currentDiff = Math.abs(
+                this.navPagesInitValues[index] - value
+              );
+              let snapVal = this.navPagesInitValues[index];
+              if (currentDiff > border) {
+                snapVal = snapVal + this.touchMoveXDir * 100;
               }
 
-              const diff = curValue % period;
+              console.log({ currentDiff });
 
-              let snapVal = 0;
-
-              if (diff >= border) {
-                snapVal = value + this.touchMoveXDir * (period - diff);
-              } else {
-                //just back by current diff in pixel
-                snapVal = value + this.touchMoveXDir * -1 * diff;
-              }
               console.log(snapVal);
               document.getElementById(page).style.left = snapVal + "vw";
             });
           }
         });
-
-      // zbierz panele,
-      // ustaw widocznosc dla głównego
-      // przy swipie:
-      //   - docelowy ma sie animowac na widok
-      //   - aktualny ma sie schowac w zaleznosci od strony na ktora idzie swipe
     },
     scrollMe: function() {
       console.log("scrollen");
