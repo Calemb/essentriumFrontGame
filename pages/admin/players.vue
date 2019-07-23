@@ -53,7 +53,7 @@ export default {
       );
     },
     Save: function(index) {
-      //WORKING ADD & DELETE player and .... field!
+      //TODO ADD & DELETE field!
       console.log(this.players[index]);
 
       Requester.post("admin/players", {
