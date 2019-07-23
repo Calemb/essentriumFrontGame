@@ -21,22 +21,30 @@ export default {
   //CONFIG HERE - END
   //
   delete: function(path) {
-    return this.requester.delete(this.urlGame(path), {
+    return this.requester.delete(this.apiUrlGame(path), {
+      withCredentials: true
+    });
+  },
+  getPage: function(path) {
+    return this.requester.get(this.urlPageGame(path), {
       withCredentials: true
     });
   },
   get: function(path) {
-    return this.requester.get(this.urlGame(path), {
+    return this.requester.get(this.apiUrlGame(path), {
       withCredentials: true
     });
   },
   post: function(path, data) {
-    return this.requester.post(this.urlGame(path), data, {
+    return this.requester.post(this.apiUrlGame(path), data, {
       withCredentials: true
     });
   },
-  urlGame: function(path) {
+  urlPageGame: function(path) {
     return "http://" + this.config.url + "/game/" + path;
+  },
+  apiUrlGame: function(path) {
+    return "http://" + this.config.url + "/api/game/" + path;
   },
   urlWs: function() {
     return this.config.url + ":" + this.config.portWs;
