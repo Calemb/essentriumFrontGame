@@ -1,15 +1,30 @@
 <template>
   <div>
-    ADMIN PANEL
-    <br />
-    <nuxt-link to="admin/news">NEWS</nuxt-link>
-    <nuxt-link to="admin/players">PLAYERS</nuxt-link>
+    <h1> ADMIN PANEL</h1>
+    <div class="innerNav">
+      <aHref
+        to="admin/news"
+        title="News"
+      ></aHref>
+      <aHref
+        to="admin/players"
+        title="Players"
+      ></aHref>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import aHref from "~/components/a-href";
+export default {
+  components: {
+    aHref
+  }
+};
 </script>
 
 <style>
+.innerNav a {
+  margin: 0px 5px;
+}
 </style>

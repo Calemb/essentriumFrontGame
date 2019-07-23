@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>PLYER DATA MOBILE</h1>
     <input
       type="text"
       v-model="title"

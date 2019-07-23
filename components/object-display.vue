@@ -54,7 +54,10 @@ export default {
 
 <style>
 .objFrame {
-  border: 1px solid gray;
-  padding: 0px 5px;
+  border-left: 1px dashed gray;
+  border-top: 1px dashed gray;
+  padding: 0px;
+  padding-top: 15px;
+  padding-left: 15px;
 }
 </style>

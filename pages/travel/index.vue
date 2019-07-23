@@ -1,25 +1,58 @@
 <template>
   <div>
-    <v-alert small :value="true" type="success" color="success">Global {{coords}}</v-alert>
-    <v-alert small :value="true" type="success" color="success">Inner {{coordsInner}}</v-alert>
-    <v-alert small :value="true" type="success" color="success">Camp: {{camp}}</v-alert>
+    <p>Global {{coords}}</p>
+    <p>Inner {{coordsInner}}</p>
+    <p>Camp: {{camp}}</p>
     <div>
-      <v-btn small @click="Travel('N')">N</v-btn>
-      <v-btn small @click="Travel('S')">S</v-btn>
-      <v-btn small @click="Travel('W')">W</v-btn>
-      <v-btn small @click="Travel('W')">W</v-btn>
+      <v-btn
+        small
+        @click="Travel('N')"
+      >N</v-btn>
+      <v-btn
+        small
+        @click="Travel('S')"
+      >S</v-btn>
+      <v-btn
+        small
+        @click="Travel('W')"
+      >W</v-btn>
+      <v-btn
+        small
+        @click="Travel('W')"
+      >W</v-btn>
 
-      <v-btn small @click="Travel('UP')">UP</v-btn>
-      <v-btn small @click="Travel('DOWN')">DOWN</v-btn>
+      <v-btn
+        small
+        @click="Travel('UP')"
+      >UP</v-btn>
+      <v-btn
+        small
+        @click="Travel('DOWN')"
+      >DOWN</v-btn>
     </div>
     <div>
-      <v-btn small @click="TravelInner('N')">sn</v-btn>
-      <v-btn small @click="TravelInner('S')">ss</v-btn>
-      <v-btn small @click="TravelInner('W')">sw</v-btn>
-      <v-btn small @click="TravelInner('E')">se</v-btn>
+      <v-btn
+        small
+        @click="TravelInner('N')"
+      >sn</v-btn>
+      <v-btn
+        small
+        @click="TravelInner('S')"
+      >ss</v-btn>
+      <v-btn
+        small
+        @click="TravelInner('W')"
+      >sw</v-btn>
+      <v-btn
+        small
+        @click="TravelInner('E')"
+      >se</v-btn>
     </div>
     <div>
-      <v-btn small @click="SetupCamp">break up the camp</v-btn>
+      <v-btn
+        small
+        @click="SetupCamp"
+      >break up the camp</v-btn>
     </div>
   </div>
 </template>
@@ -68,4 +101,7 @@ export default {
 </script>
 
 <style>
+p {
+  max-width: 100%;
+}
 </style>
