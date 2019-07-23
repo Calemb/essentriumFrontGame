@@ -1,8 +1,9 @@
 <template>
   <div class="avatar">
-    <nuxt-link to="/stats">
-      {{ name }}
-    </nuxt-link>
+    <!-- <nuxt-link to="/stats"> -->
+      <!-- {{ name }} -->
+    <!-- </nuxt-link> -->
+    <!-- <br /> -->
     [{{hp}} / MAX]
     <br>
   </div>
@@ -41,4 +42,11 @@ export default {
 </script>
 
 <style>
+.avatar{
+  /* border: 1px solid green; */
+  padding: 0px;
+  margin: 0px;
+  /* width: 20%; */
+  /* height: 10vw; */
+}
 </style>

@@ -1,25 +1,53 @@
 <script>
 import Axios from "axios";
+const config = {
+  prod: {
+    url: "51.38.129.191",
+    portWs: "80"
+  },
+  dev: {
+    url: "127.0.0.1:3001",
+    portWs: "3001"
+  }
+};
 
 export default {
   requester: Axios,
+  //
+  //CONFIG HERE - BEGIN
+  //
+  config: config.dev,
+  //
+  //CONFIG HERE - END
+  //
   delete: function(path) {
-    return this.requester.delete(this.urlGame(path), {
+    return this.requester.delete(this.apiUrlGame(path), {
+      withCredentials: true
+    });
+  },
+  getPage: function(path) {
+    return this.requester.get(this.urlPageGame(path), {
       withCredentials: true
     });
   },
   get: function(path) {
-    return this.requester.get(this.urlGame(path), {
+    return this.requester.get(this.apiUrlGame(path), {
       withCredentials: true
     });
   },
   post: function(path, data) {
-    return this.requester.post(this.urlGame(path), data, {
+    return this.requester.post(this.apiUrlGame(path), data, {
       withCredentials: true
     });
   },
-  urlGame: function(path) {
-    return "http://51.38.129.191/game/" + path;
+  urlPageGame: function(path) {
+    return "http://" + this.config.url + "/game/" + path;
+  },
+  apiUrlGame: function(path) {
+    return "http://" + this.config.url + "/api/game/" + path;
+  },
+  urlWs: function() {
+    return this.config.url + ":" + this.config.portWs;
   }
 };
 </script>

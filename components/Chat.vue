@@ -2,7 +2,10 @@
   <div id="chat">
     <div id="dialog">
       Content of {{ activeTabTitle }}
-      <button @click="resize">~</button>
+      <button
+        class="resizeButton"
+        @click="resize"
+      >~</button>
       <button @click="togglePlayersList">players</button>
       {{ debug }}
       <div id="content">
@@ -12,38 +15,37 @@
           class="msg"
         >{{msg}}</p>
       </div>
-      <button
-        v-for="(tab, index) in tabs"
-        :key="index"
-        @click="activateTab(index)"
-        v-bind:class="{active: index===activeTab}"
-      >{{tab.title}}</button>
-      <br>
-      <input
-        type="text"
-        placeholder="msg"
-        v-model="msg"
-      >
-      <button @click="send">Send</button>
-    </div>
-    <div id="playersList">
-      <nuxt-link
-        v-for="p in playersList"
-        :key="p._id"
-        v-bind:to="'./view/'+p._id"
-      >
-        {{ p.name }}
-      </nuxt-link>
+      <div id="chatOptions">
+        <button
+          v-for="(tab, index) in tabs"
+          :key="index"
+          @click="activateTab(index)"
+          v-bind:class="{active: index===activeTab}"
+        >{{tab.title}}</button>
+        <br>
+        <input
+          type="text"
+          placeholder="msg"
+          v-model="msg"
+        >
+        <button @click="send">Send</button>
+      </div>
+      <div id="playersList">
+        <nuxt-link
+          v-for="p in playersList"
+          :key="p._id"
+          v-bind:to="'./view/'+p._id"
+        >
+          {{ p.name }}
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-//WORKING chat global list with separate to other cities etc
-//  -> click on player and view stats
-//    -> msg to player
-//      -> fight with player
 import io from "~/plugins/socket.io.js";
+import requester from "~/components/request-cfg";
 
 export default {
   props: ["guildName", "cityName"],
@@ -52,7 +54,7 @@ export default {
     return {
       msg: "",
       debug: "",
-      url: "127.0.0.1:3000/",
+      url: requester.urlWs(),
       tabs: [],
       activeTab: 0, //index of tabs
       expanded: true,
@@ -87,8 +89,17 @@ export default {
   methods: {
     togglePlayersList: function() {},
     resize: function() {
-      this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
-      this.expanded = !this.expanded;
+      console.log(
+        "disp: " +
+          document.getElementsByClassName("resizeButton")[0].offsetParent +
+          " :::::::::::::::: "
+      );
+      if (
+        document.getElementsByClassName("resizeButton")[0].offsetParent !== null
+      ) {
+        this.contentDOM.style.height = this.expanded ? "10vh" : "65vh";
+        this.expanded = !this.expanded;
+      }
     },
     activateTab: function(tabIndex) {
       this.activeTab = tabIndex;
@@ -121,7 +132,7 @@ export default {
           locationTab.socket.on("new-player", msg => {
             console.log("new-player");
             // console.table(msg);
-            t.players.push(msg)
+            t.players.push(msg);
           });
         });
       this.tabs.forEach(tab => {
@@ -153,18 +164,27 @@ export default {
 
 <style>
 #chat {
-  /* border: 1px solid red; */
-  /* background-color: #888; */
-  position: fixed;
   right: 0px;
   bottom: 0px;
   width: 30vw;
-  padding: 0px 3px;
-  /* height: 85vh; */
 }
+
+@media only screen and (max-width: 920px) {
+  #content {
+    height: 75vh;
+  }
+  #chatOptions {
+    height: 25vh;
+    width: 100%;
+  }
+  .resizeButton {
+    display: none;
+  }
+}
+
 #content {
   display: block;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   overflow-y: scroll;
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -184,12 +204,17 @@ button {
   color: #fff;
 }
 input {
-  border: 1px solid yellow;
-  padding: 15px;
+  border: 1px solid rgb(68, 41, 30);
+  padding: 10px 5px;
+}
+#dialog {
+  box-sizing: border-box;
+  width: 100%;
+  /* border: 3px solid purple; */
 }
 #dialog,
 #playersList {
-  border: 1px solid red;
+  width: 100vw;
   display: inline-block;
 }
 </style>
