@@ -9,9 +9,7 @@
       }" -->
     <div id="swipeNav">
       <div id="character">
-        <h1>
-          CHA
-        </h1>
+        <PlayerMobile />
       </div>
       <innerApp id="innerApp">
       </innerApp>
@@ -28,11 +26,13 @@ import Chat from "~/components/Chat";
 
 import InnerApp from "~/components/inner-app";
 import Requester from "~/components/request-cfg";
+import PlayerMobile from "~/components/player-mobile";
 //WORKING multi screen mobile nav with swipe https://codepen.io/pen/?&editable=true&editors=101
 export default {
   components: {
     InnerApp,
-    Chat
+    Chat,
+    PlayerMobile
   },
   data() {
     return {
@@ -215,12 +215,6 @@ footer {
   width: 100%;
   bottom: 0px;
 }
-header {
-  text-align: center;
-  border-bottom: 1px solid gray;
-  padding: 5px 0px;
-  margin-bottom: 5px;
-}
 header > * {
   /* border: 3px solid red; */
   display: inline-block;
@@ -245,14 +239,14 @@ header a {
   display: inline-block;
 }
 #innerApp {
-  border: 1px solid peru;
+  /* border: 1px solid peru; */
   margin: 0px;
   padding-bottom: 50px;
 }
 
 #chat {
   position: fixed;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   width: 35vw;
   height: 60vh;
   /* border: 1px solid peru; */
@@ -264,8 +258,9 @@ header a {
   #character,
   #innerApp,
   #chat {
-    /* height: 100vh; */
-    overflow: hidden;
+    
+overflow-x: hidden;
+overflow-y: scroll;
 
     display: inline-block;
     position: relative;
@@ -284,7 +279,7 @@ header a {
 }
 
 #swipeNav {
-  border: 10px solid red;
+  /* border: 1px solid red; */
   height: 100vh;
   width: 100vw;
   left: 0vw;
