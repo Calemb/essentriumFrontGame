@@ -1,8 +1,8 @@
 const pkg = require('./package')
 
 module.exports = {
-  mode: 'universal',
-  // mode: 'spa',
+  // mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page
@@ -77,7 +77,7 @@ module.exports = {
     }
   },
   generate: {
-    // dir: '../backend/public/game'
-    dir: './_buildTest'
+    dir: '../backend/public/game'
+    // dir: './_buildTest'
   }
 }
