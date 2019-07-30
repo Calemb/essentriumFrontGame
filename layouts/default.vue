@@ -1,19 +1,23 @@
 <template>
-  <div
-    id="app"
-    v-scroll="scrollMe"
-  >
-    <!-- v-touch="{
-        left: () => swipe(1),
-        right: () => swipe(-1),
-      }" -->
+  <div id="app">
     <div id="swipeNav">
       <div id="character">
         <PlayerMobile />
       </div>
+      <div
+        class="playerIndicator indicator"
+        v-bind:class="{ navDisabled: navSide==navMax}"
+        @click="GoNav(1)"
+      ></div>
       <innerApp id="innerApp">
       </innerApp>
+      <div
+        class="chatIndicator indicator"
+        v-bind:class="{ navDisabled: navSide==0}"
+        @click="GoNav(-1)"
+      ></div>
       <chat
+        id="chat"
         v-bind:guildName="'testGuildName'"
         v-bind:cityName="'testCityName'"
       />
@@ -27,7 +31,9 @@ import Chat from "~/components/Chat";
 import InnerApp from "~/components/inner-app";
 import Requester from "~/components/request-cfg";
 import PlayerMobile from "~/components/player-mobile";
-//WORKING multi screen mobile nav with swipe https://codepen.io/pen/?&editable=true&editors=101
+import touchSupported from "~/components/touch-detect";
+//WORKING widok ekranow na desktop'a
+// na mobilu jest minimalne good enough!
 export default {
   components: {
     InnerApp,
@@ -53,114 +59,52 @@ export default {
   },
   mounted: function() {
     this.LoadPriviliges();
-    this.SetupLayout();
+    this.AdjustPages();
   },
   methods: {
+    GoNav: function(dir) {
+      this.navigateTo(dir);
+    },
     AdjustPages: function() {
-      this.navPages.forEach((page, index) => {
-        let value = 100 * index + this.navSide * -100;
-        document.getElementById(page).style.left = value + "vw";
-        console.log(value);
-      });
+      let width =
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+      console.log("Screen width: ", width);
+
+      if (width < 921) {
+        this.navPages.forEach((page, index) => {
+          let value = 100 * index + this.navSide * -100;
+          document.getElementById(page).style.left = value + "vw";
+        });
+        this.navPages.forEach((page, index) => {
+          this.navPagesInitValues[index] = this.ExtractNumber(
+            document.getElementById(page).style.left
+          );
+        });
+      }
     },
     ExtractNumber: function(cssValue) {
       return Number(cssValue.replace("vw", ""));
     },
-    SetupLayout: function() {
-      // let prevClientX = 0;
-      this.AdjustPages();
-      document
-        .getElementById(this.navItem)
-        .addEventListener("touchstart", event => {
-          this.navPages.forEach((page, index) => {
-            this.navPagesInitValues[index] = this.ExtractNumber(
-              document.getElementById(page).style.left
-            );
-          });
-        });
-      document
-        .getElementById(this.navItem)
-        .addEventListener("touchmove", event => {
-          //show animation
-          let size = event.touches[0].clientX - this.lastTouchX;
-          this.touchXSize = size;
-          this.touchMoveXDir = Math.sign(size);
-          console.log("Scrollen");
+    navigateTo: function(direction) {
+      console.log(this.navPagesInitValues);
 
-          this.navPages.forEach((page, index) => {
-            let current = this.ExtractNumber(
-              document.getElementById(page).style.left
-            );
-            let value = this.touchMoveXDir; // * 0.01;
-            let compValue = current + Number(value);
-
-            let max = index * 100;
-            let min = max - 200;
-
-            if (compValue >= min && compValue <= max) {
-              document.getElementById(page).style.left = compValue + "vw";
-            }
-          });
-
-          this.lastTouchX = event.touches[0].clientX;
-        });
-      document
-        .getElementById(this.navItem)
-        .addEventListener("touchend", event => {
-          // console.log(this.touchMoveXDir);
-          console.log(this.navPagesInitValues);
-
-          if (
-            this.navSide + this.touchMoveXDir >= 0 &&
-            this.navSide + this.touchMoveXDir <= this.navMax
-          ) {
-            this.navPages.forEach((page, index) => {
-              const value = this.ExtractNumber(
-                document.getElementById(page).style.left
-              );
-              const period = 100;
-
-              const border = period / 2;
-
-              let currentDiff = Math.abs(
-                this.navPagesInitValues[index] - value
-              );
-              let snapVal = this.navPagesInitValues[index];
-              if (currentDiff > border) {
-                snapVal = snapVal + this.touchMoveXDir * 100;
-              }
-
-              console.log({ currentDiff });
-
-              console.log(snapVal);
-              document.getElementById(page).style.left = snapVal + "vw";
-            });
-          }
-        });
-    },
-    scrollMe: function() {
-      console.log("scrollen");
-    },
-    swipe: function(direction) {
       if (
         this.navSide + direction >= 0 &&
         this.navSide + direction <= this.navMax
       ) {
-        // width na 100vw nie daje nam normlanie dragowac ekranu, ale z kolei
-        // po przesunieciu marginesu gubi msContentScript
-        // moze na detect swipe wyrównywac tylko scrollY ?
+        this.navPages.forEach((page, index) => {
+          let value = this.ExtractNumber(
+            document.getElementById(page).style.left
+          );
 
-        let targetAnimValue = (this.navSide + direction) * -1 * 100;
-        this.AnimSwipeNav(targetAnimValue, 0);
+          const snapVal = value + direction * 100;
 
-        //change anim nav
+          document.getElementById(page).style.left = snapVal + "vw";
+        });
         this.navSide += direction;
-
-        console.log(direction);
       }
-    },
-    AnimSwipeNav: function(targetValue, time) {
-      document.getElementById(this.navItem).style.left = targetValue + "vw";
     },
     LoadPriviliges: function() {
       Requester.get("_account").then(response => {
@@ -249,22 +193,50 @@ header a {
   /* border: 1px solid red; */
   width: 35vw;
   height: 60vh;
+  right: 0px;
   /* border: 1px solid peru; */
 }
 #character {
   display: none;
 }
+.indicator {
+  display: none;
+  position: absolute;
+  z-index: 9;
+
+  width: 70px;
+  height: 70px;
+
+  background-color: rgba(0, 128, 255, 0.8);
+
+  border-radius: 15px;
+
+  bottom: 15px;
+}
+.chatIndicator {
+  right: 0px;
+}
 @media only screen and (max-width: 920px) {
+  .indicator {
+    display: block;
+  }
+  #character {
+    left: -100vw;
+  }
+  #innerApp {
+    left: 0vw;
+  }
+  #chat {
+    left: 100vw;
+  }
+
   #character,
   #innerApp,
   #chat {
-    
-overflow-x: hidden;
-overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     display: inline-block;
-    position: relative;
-
     position: absolute;
 
     vertical-align: top;
@@ -287,5 +259,8 @@ overflow-y: scroll;
   display: block;
   position: absolute;
   /* touch-action: none; */
+}
+.navDisabled {
+  display: none;
 }
 </style>
