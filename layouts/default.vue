@@ -31,7 +31,6 @@ import Chat from "~/components/Chat";
 import InnerApp from "~/components/inner-app";
 import Requester from "~/components/request-cfg";
 import PlayerMobile from "~/components/player-mobile";
-import touchSupported from "~/components/touch-detect";
 //WORKING widok ekranow na desktop'a
 // na mobilu jest minimalne good enough!
 export default {
