@@ -6,7 +6,6 @@
 </template>
 
 <script>
-//pseudo static
 import requester from "~/components/request-cfg";
 
 export default {

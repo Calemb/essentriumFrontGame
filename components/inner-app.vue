@@ -9,22 +9,22 @@
           title="ADMIN"
         ></aHref>
         <aHref
-          to="/travel"
+          to="travel"
           title="Travel"
         ></aHref>
         <aHref
           title="GUILD"
-          to="/guild"
+          to="guild"
         ></aHref>
         <aHref
           title="MSG"
-          to="/inbox"
+          to="inbox"
         >
           <inbox />
         </aHref>
         <aHref
           title="LogOUT"
-          to="/logout"
+          to="logout"
         ></aHref>
       </header>
     </div>
