@@ -60,36 +60,36 @@
 <script>
 import Requester from "~/components/request-cfg.vue";
 export default {
-  data() {
+  data () {
     return {
       coords: { x: 0, y: 0 },
       coordsInner: { x: 0, y: 0 },
       camp: {}
     };
   },
-  mounted() {
+  mounted () {
     this.LoadCoords();
   },
   methods: {
-    SetupCamp: function() {
+    SetupCamp: function () {
       Requester.post("_travel", { camp: true }).then(response => {
         this.camp = response.data.camp;
       });
     },
-    LoadCoords: function() {
+    LoadCoords: function () {
       Requester.get("_travel").then(response => {
         this.coords = response.data.coords;
         this.coordsInner = response.data.coordsInner;
         this.camp = response.data.camp;
       });
     },
-    Travel: function(direction) {
+    Travel: function (direction) {
       Requester.post("_travel", { direction: direction }).then(response => {
         this.coords = response.data.coords;
         this.coordsInner = response.data.coordsInner;
       });
     },
-    TravelInner: function(direction) {
+    TravelInner: function (direction) {
       Requester.post("_travel", { direction: direction, inner: true }).then(
         response => {
           this.coordsInner = response.data.coordsInner;
