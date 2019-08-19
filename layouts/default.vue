@@ -31,16 +31,14 @@ import Chat from "~/components/Chat";
 import InnerApp from "~/components/inner-app";
 import Requester from "~/components/request-cfg";
 import PlayerMobile from "~/components/player-mobile";
-import touchSupported from "~/components/touch-detect";
-//WORKING widok ekranow na desktop'a
-// na mobilu jest minimalne good enough!
+
 export default {
   components: {
     InnerApp,
     Chat,
     PlayerMobile
   },
-  data() {
+  data () {
     return {
       adminPriviliges: false,
       navSide: 1,
@@ -57,15 +55,15 @@ export default {
       navPagesInitValues: []
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.LoadPriviliges();
     this.AdjustPages();
   },
   methods: {
-    GoNav: function(dir) {
+    GoNav: function (dir) {
       this.navigateTo(dir);
     },
-    AdjustPages: function() {
+    AdjustPages: function () {
       let width =
         window.innerWidth ||
         document.documentElement.clientWidth ||
@@ -84,10 +82,10 @@ export default {
         });
       }
     },
-    ExtractNumber: function(cssValue) {
+    ExtractNumber: function (cssValue) {
       return Number(cssValue.replace("vw", ""));
     },
-    navigateTo: function(direction) {
+    navigateTo: function (direction) {
       console.log(this.navPagesInitValues);
 
       if (
@@ -106,7 +104,7 @@ export default {
         this.navSide += direction;
       }
     },
-    LoadPriviliges: function() {
+    LoadPriviliges: function () {
       Requester.get("_account").then(response => {
         const priviliges = response.data.priviliges;
         if (priviliges.includes("admin")) {
