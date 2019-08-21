@@ -2,7 +2,7 @@
 import Axios from "axios";
 const config = {
   prod: {
-    url: "51.38.129.212",
+    url: "51.77.59.212",
     portWs: "80"
   },
   dev: {
