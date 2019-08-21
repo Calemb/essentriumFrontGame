@@ -16,7 +16,7 @@ export default {
   //
   //CONFIG HERE - BEGIN
   //
-  config: config.dev,
+  config: config.prod,
   //
   //CONFIG HERE - END
   //
