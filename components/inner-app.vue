@@ -25,6 +25,8 @@
         <aHref
           title="LogOUT"
           to="logout"
+          mode="AJAX"
+          @logout="logoutHandler"
         ></aHref>
       </header>
     </div>
@@ -52,10 +54,20 @@ export default {
     Inbox,
     aHref
   },
-  data() {
+  data () {
     return {
       debug: ""
     };
+  },
+  methods: {
+    logoutHandler: function (response) {
+      if (response && response.data) {
+        console.log(response.data)
+        setTimeout(() => {
+          window.location = response.data.location
+        }, 5000);
+      }
+    }
   }
 };
 </script>
