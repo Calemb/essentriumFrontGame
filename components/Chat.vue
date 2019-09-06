@@ -6,9 +6,10 @@
         class="resizeButton"
         @click="resize"
       >~</button>
-      <button @click="togglePlayersList">players</button>
+      <!-- <button @click="togglePlayersList">players</button> -->
       {{ debug }}
       <div id="content">
+        {{ msg }}
         <p
           v-for="(msg, mI) in activeTabContent"
           :key="mI"
@@ -31,13 +32,15 @@
         <button @click="send">Send</button>
       </div>
       <div id="playersList">
-        <nuxt-link
+        playersList:
+        <p
           v-for="p in playersList"
           :key="p._id"
-          v-bind:to="'./view/'+p._id"
         >
-          {{ p.name }}
-        </nuxt-link>
+          <nuxt-link v-bind:to="'/view/'+p._id">
+            {{ p.name }}
+          </nuxt-link>
+        </p>
       </div>
     </div>
   </div>
@@ -50,7 +53,7 @@ import requester from "~/components/request-cfg";
 export default {
   props: ["guildName", "cityName"],
 
-  data() {
+  data () {
     return {
       msg: "",
       debug: "",
@@ -63,17 +66,17 @@ export default {
     };
   },
   computed: {
-    playersList: function() {
+    playersList: function () {
       return this.players;
     },
-    activeTabTitle: function() {
+    activeTabTitle: function () {
       if (this.tabs.length > 0) {
         return this.tabs[this.activeTab].title;
       } else {
         return "";
       }
     },
-    activeTabContent: function() {
+    activeTabContent: function () {
       if (this.tabs.length > 0) {
         return this.tabs[this.activeTab].content;
       } else {
@@ -81,18 +84,31 @@ export default {
       }
     }
   },
-  mounted: function() {
-    this.prepareTabs();
-    this.contentDOM = document.getElementById("content");
-    this.resize();
+  mounted: function () {
+    this.prepareTabs()
+    this.contentDOM = document.getElementById("content")
+    this.loadPlayers()
+    this.resize()
   },
   methods: {
-    togglePlayersList: function() {},
-    resize: function() {
+    loadPlayers: function () {
+      requester.get('_players-list').then(response => {
+        // console.log(response);
+        if (response.data) {
+          this.players = response.data
+        }
+        else {
+          this.msg = response
+        }
+
+      })
+    },
+    // togglePlayersList: function() {},
+    resize: function () {
       console.log(
         "disp: " +
-          document.getElementsByClassName("resizeButton")[0].offsetParent +
-          " :::::::::::::::: "
+        document.getElementsByClassName("resizeButton")[0].offsetParent +
+        " :::::::::::::::: "
       );
       if (
         document.getElementsByClassName("resizeButton")[0].offsetParent !== null
@@ -101,10 +117,10 @@ export default {
         this.expanded = !this.expanded;
       }
     },
-    activateTab: function(tabIndex) {
+    activateTab: function (tabIndex) {
       this.activeTab = tabIndex;
     },
-    prepareTabs: function() {
+    prepareTabs: function () {
       this.tabs.push({
         title: "Location", //btn title
         socket: io(this.url + "location"), //socket of namespace
@@ -136,7 +152,7 @@ export default {
           });
         });
       this.tabs.forEach(tab => {
-        tab.socket.on("msg", function(m) {
+        tab.socket.on("msg", function (m) {
           // console.log(t);
           var id = this.id;
           t.tabs
@@ -147,7 +163,7 @@ export default {
         });
       });
     },
-    send: function() {
+    send: function () {
       this.tabs[this.activeTab].socket.emit("msg", this.msg, () => {
         //push msg to local chat only when delivered to all users!
         this.tabs[this.activeTab].content.push(this.msg);
@@ -212,9 +228,12 @@ input {
   width: 100%;
   /* border: 3px solid purple; */
 }
-#dialog,
+/* #dialog, */
 #playersList {
   width: 100vw;
-  display: inline-block;
+  border: 1px solid red;
+  position: absolute;
+  top: 20px;
+  left: 0;
 }
 </style>
