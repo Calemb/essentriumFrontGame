@@ -40,11 +40,19 @@ export default {
       withCredentials: true
     });
   },
+  postPlain: function(path, data) {
+    return this.requester.post(this.urlGame(path), data, {
+      withCredentials: true
+    });
+  },
   urlPageGame: function(path) {
     return "http://" + this.config.url + "/game/" + path;
   },
   apiUrlGame: function(path) {
     return "http://" + this.config.url + "/api/game/" + path;
+  },
+  urlGame: function(path) {
+    return "http://" + this.config.url + "/" + path;
   },
   urlWs: function() {
     return this.config.url + ":" + this.config.portWs;
