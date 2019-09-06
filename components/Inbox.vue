@@ -1,19 +1,27 @@
 <template>
   <span>
-    MSG ( {{ unreadCount }} )
+    <aHref
+      title="MSG"
+      to="inbox"
+    >
+    </aHref>( {{ unreadCount }} )
   </span>
 </template>
 
 <script>
 import Requester from "~/components/request-cfg.vue";
 
+import aHref from "~/components/a-href";
 export default {
-  data() {
+  components: {
+    aHref
+  },
+  data () {
     return {
       unreadCount: 0
     };
   },
-  mounted: function() {
+  mounted: function () {
     //fetch unread msgs count from server
     Requester.get("msg/unreaded").then(response => {
       console.log("INBOX unreaded", response.data);
