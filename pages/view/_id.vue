@@ -2,10 +2,12 @@
   <div>
     <h1>{{ playerData.name }}</h1>
     ({{ id }})
-    <p
+    <div
       v-for="(value, key) in playerData"
       :key="key"
-    >{{ key }}: {{ value }}</p>
+    >
+      <p>{{ key }}: {{ value }}</p>
+    </div>
     <br>
     <button @click="toggleMsgForm">
       MSG me!
@@ -29,14 +31,14 @@ export default {
   components: {
     MsgForm
   },
-  data() {
+  data () {
     return {
       id: "",
       playerData: {},
       msgFormVisible: false
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.id = this.$nuxt._route.params.id;
     Requester.get("view/" + this.id).then(response => {
       console.log(response);
@@ -44,7 +46,7 @@ export default {
     });
   },
   methods: {
-    toggleMsgForm: function() {
+    toggleMsgForm: function () {
       this.msgFormVisible = !this.msgFormVisible;
     }
   }
