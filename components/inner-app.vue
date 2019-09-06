@@ -16,12 +16,7 @@
           title="GUILD"
           to="guild"
         ></aHref>
-        <aHref
-          title="MSG"
-          to="inbox"
-        >
-          <inbox />
-        </aHref>
+        <inbox />
         <aHref
           title="LogOUT"
           to="logout"
