@@ -27,8 +27,9 @@
     </div>
     <nuxt id="nuxtApp" />
     <footer>
-      &copy; 2019
-      <br>
+      &copy; 2019 |
+      # {{ version }}
+      <br />
       <a href="http://essentrium.net">ESSENTRIUM.NET</a>
       <br>
       {{ debug }}
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import Version from "~/components/version";
 import Avatar from "~/components/Avatar";
 import Logo from "~/components/Logo";
 import Inbox from "~/components/Inbox";
@@ -47,12 +49,18 @@ export default {
     Avatar,
     Logo,
     Inbox,
+    Version,
     aHref
   },
   data () {
     return {
       debug: ""
     };
+  },
+  computed: {
+    version: function() {
+      return Version.buildVersion();
+    }
   },
   methods: {
     logoutHandler: function (response) {
