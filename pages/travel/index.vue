@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     SetupCamp: function () {
-      Requester.post("_camp", { camp: true }).then(response => {
+      Requester.post("_camp").then(response => {
         this.camp = response.data.camp;
       });
     },
